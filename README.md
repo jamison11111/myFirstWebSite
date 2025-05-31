@@ -32,8 +32,8 @@ linux终端执行docker build -t bilibili_main_docker:1.1 .构建后端项目镜
 确保你的nginx的后端资源目录以及nginx.conf与端口转发相关的配置逻辑正确，确保fastdfs能正常上传下载文件，确保你的nginx服务已经正确开启。
 # Step9
 上述步骤全部完成且自检无误后，一个简单的在线视频网站就搭建完成了，快去试试吧!
+![image](https://github.com/user-attachments/assets/f77e2873-f8f8-4586-859b-5556b3ac6488)
 
-![image](https://github.com/user-attachments/assets/da0341c1-cda6-4363-abea-b4dacc5fb26d)
 
 
 
