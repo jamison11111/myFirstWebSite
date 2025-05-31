@@ -22,7 +22,19 @@ git clone https://github.com/jamison11111/myFirstWebSite.git  #克隆本项目
 指定你自己的mysql,redis,fastdfs文件服务器的ip和端口。用IDEA带有的Maven声明周期管理工具中的"package"选项将后端项目一键打包，你将在bilibili-api/target目录下找到我们打包后的目标jar包bilibili-api-1.0-SNAPSHOT.jar
 # Step6
 将目标jar包连同backEndProject下的docker-compose.yml和Dockerfile文件一起拷贝到你自己的服务器目录下，形成以下形式的目录结构
-![image](https://github.com/user-attachments/assets/b203e86e-1a34-4247-ac2b-1bca90c72709)
+![image](https://github.com/user-attachments/assets/8ddad0bf-0ca2-4e2f-ab20-8f779dffe098)
+如有个性化的部署需求，可自行修改docker-compose.yml和Dockerfile这两个文件的内容，实现个性化的部署。
+注:在部署开始前，请自行配置好国内的docker镜像源或为你的服务器配置好能够访问外网docker仓库的网络代理。
+# Step7
+linux终端执行docker build -t bilibili_main_docker:1.1 .构建后端项目镜像
+构建完成后,终端执行docker compose up指令一键部署redis,mysql和后端项目容器
+# Step8
+确保你的nginx的后端资源目录以及nginx.conf与端口转发相关的配置逻辑正确，确保fastdfs能正常上传下载文件，确保你的nginx服务已经正确开启。
+# Step9
+上述步骤全部完成且自检无误后，一个简单的在线视频网站就搭建完成了，快去试试吧!
+
+![image](https://github.com/user-attachments/assets/da0341c1-cda6-4363-abea-b4dacc5fb26d)
+
 
 
 
