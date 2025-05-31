@@ -29,8 +29,11 @@ git clone https://github.com/jamison11111/myFirstWebSite.git  #克隆本项目
 linux终端执行docker build -t bilibili_main_docker:1.1 .构建后端项目镜像
 构建完成后,终端执行docker compose up指令一键部署redis,mysql和后端项目容器
 # Step8
-linux终端执行docker exec -it mysqlService[你的sql容器的名称] bash进入mysql容器,然后在容器内登录你的mysql客户端,进入bilibili这个库,在库里面运行sql语句:create table t_file(id bigint auto_increment comment '主键id'primary key,url varchar(500) null comment '文件存储路径',type varchar(50) null comment '文件类型',md5 varchar(500) null comment '文件md5唯一标识串',createTime datetime null comment '创建时间',name varchar(256) null)comment '文件表' row_format = DYNAMIC;由于本项目的后端部分是bilibiliProject这个完整项目的阉割版,所以只需要这一张数据库表,用来存储文件服务器中存储的视频
-文件的名称,以及视频文件在文件服务器中的相对路径,还有就是完整视频文件的md5字符串(在配合redis实现视频的断点续传和妙传功能时会用到这个字符串),这张表是连接我们后端服务与fastdfs文件服务的桥梁,只有创建了这张数据库表,我们的视频网站才能正常运行。
+linux终端执行
+docker exec -it mysqlService[你的sql容器的名称] bash
+进入mysql容器,然后在容器内登录你的mysql客户端,进入bilibili这个库,在库里面运行sql语句:
+create table t_file(id bigint auto_increment comment '主键id'primary key,url varchar(500) null comment '文件存储路径',type varchar(50) null comment '文件类型',md5 varchar(500) null comment '文件md5唯一标识串',createTime datetime null comment '创建时间',name varchar(256) null)comment '文件表' row_format = DYNAMIC;
+由于本项目的后端部分是bilibiliProject这个完整项目的阉割版,所以只需要这一张数据库表,用来存储文件服务器中存储的视频文件的名称,以及视频文件在文件服务器中的相对路径,还有就是完整视频文件的md5字符串(在配合redis实现视频的断点续传和妙传功能时会用到这个字符串),这张表是连接我们后端服务与fastdfs文件服务的桥梁,只有创建了这张数据库表,我们的视频网站才能正常运行。
 # Step9
 确保你的nginx的后端资源目录以及nginx.conf与端口转发相关的配置逻辑正确，确保fastdfs能正常上传下载文件，确保你的nginx服务已经正常开启且可访问。
 # Step10
