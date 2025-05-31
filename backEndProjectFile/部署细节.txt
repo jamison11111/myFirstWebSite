@@ -1,0 +1,112 @@
+server.port=8080
+
+spring.datasource.url=jdbc:mysql://mysqlService:3306/bilibili
+spring.datasource.username=root
+spring.datasource.password=mnb2356517
+
+spring.redis.host=myredisSerivce
+spring.redis.port=6379
+spring.redis.password=mnb2356517
+
+
+fdfs.tracker-list=localhost:22122
+fdfs.http.storage-addr=http://localhost:8889/group1/
+
+
+# 基础镜像使用java
+FROM java:8
+
+# 作者
+MAINTAINER lwc
+
+# VOLUME 指定临时文件目录为/tmp，在主机/var/lib/docker目录下创建了一个临时文件并链接到容器的/tmp,可以不指定宿主机目录
+VOLUME /tmp
+
+# 将jar包添加到容器中并更名为lwc_docker.jar
+ADD bilibili-api-1.0-SNAPSHOT.jar Main.jar
+
+# 创建jar包文件以供字节流输入
+RUN bash -c 'touch /Main.jar'
+
+#容器启动后执行的指令
+ENTRYPOINT ["java","-jar","/Main.jar"]
+
+
+
+docker build -t bilibili_main_docker:1.1 .
+
+
+
+services:
+  mainService:
+    image: bilibili_main_docker:1.1  # 冒号后加空格
+    container_name: mainServiceContainer
+    ports:
+      - "8080:8080"  # 短横线后加空格
+    volumes:
+      - /app/mainServiceData:/data  # 短横线后加空格
+    networks:
+      - lwc_net  # 短横线后加空格 + 统一网络名
+    depends_on:
+      - myredisService  # 短横线后加空格
+      - mysqlService  # 短横线后加空格
+
+  myredisService:
+    image: redis:latest  # 冒号后加空格
+    container_name: myredisService
+    ports:
+      - "6379:6379"  # 短横线后加空格
+    volumes:
+      - /app/myredisService/myredis.conf:/etc/myredisService/myredisService.conf  # 短横线后加空格
+      - /app/redis/data:/data  # 短横线后加空格
+    networks:
+      - lwc_net  # 短横线后加空格 + 统一网络名
+    command: redis-server /etc/myredisService/myredisService.conf  # 冒号后加空格
+
+  mysqlService:
+    image: mysql:latest  # 冒号后加空格
+    container_name: mysqlService
+    environment:
+      MYSQL_ROOT_PASSWORD: 'mnb2356517'  # 冒号后加空格
+      MYSQL_ALLOW_EMPTY_PASSWORD: "no"  # 冒号后加空格
+      MYSQL_DATABASE: 'bilibili'  # 冒号后加空格
+      MYSQL_USER: 'lwc'  # 冒号后加空格
+      MYSQL_PASSWORD: 'mnb2356517'  # 冒号后加空格
+    ports:
+      - "3306:3306"  # 短横线后加空格
+    volumes:
+      - /app/mysqlService/db:/var/lib/mysqlService  # 短横线后加空格 + 统一缩进
+      - /app/mysqlService/conf/my.cnf:/etc/mysqlService/conf.d/my.cnf  # 短横线后加空格 + 统一缩进
+      - /app/mysqlService/init:/docker-entrypoint-initdb.d  # 短横线后加空格 + 统一缩进
+    networks:
+      - lwc_net  # 短横线后加空格 + 统一网络名
+    command: --default-authentication-plugin=mysql_native_password  # 合并参数避免歧义
+
+networks:
+  lwc_net:  # 统一网络名（与服务中引用一致）
+
+
+
+
+有这么一个现实性的问题，如果想要在nginx服务中添加fastdfs模块，那就需要下载nginx的二进制源码
+先把模块加进去，然后再编译安装，这样Nginx 并非完全不支持模块动态扩展，但动态扩展需满足“编译时开启动态模块支持 + 模块本身支持动态编译”两个前提。传统“静态编译”的 Nginx 确实缺乏灵活的模块动态扩展能力。
+
+而普通的nginx镜像是编译安装完成后的版本，不能添加模块了，所以正解应该是在自己服务器本机环境将自己的nginx服务和环境一起打包为一个镜像（通过Dockerfile），就像之前通过Dockerfile把jar包打包为镜像一样
+
+原理就是把nginx和fastdfs相关的二进制文件，配置文件和数据文件以及依赖库全部拷贝进一个centos基础镜像里，然后就能把nginx容器化了，实践起来非常麻烦，还有各种网络问题，这里先不实践了，把nginx容器化带来的时间成本太高，收益不大，不弄了
+nginx和fastdfs不容器化了，就在服务器本机开着就行了
+
+
+
+
+
+create table t_file(id         bigint auto_increment comment '主键id'primary key,url        varchar(500) null comment '文件存储路径',type       varchar(50)  null comment '文件类型',md5        varchar(500) null comment '文件md5唯一标识串',createTime datetime     null comment '创建时间',name       varchar(256) null)comment '文件表' row_format = DYNAMIC;
+
+fdfs_upload_file /etc/fdfs/client.conf testfile
+
+
+
+
+
+
+

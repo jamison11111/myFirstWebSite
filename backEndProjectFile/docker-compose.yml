@@ -1,0 +1,47 @@
+services:
+  mainService:
+    image: bilibili_main_docker:1.1  # 冒号后加空格
+    container_name: mainServiceContainer
+    ports:
+      - "8080:8080"  # 短横线后加空格
+    volumes:
+      - /app/mainServiceData:/data  # 短横线后加空格
+    networks:
+      - lwc_net  # 短横线后加空格 + 统一网络名
+    depends_on:
+      - myredisService  # 短横线后加空格
+      - mysqlService  # 短横线后加空格
+
+  myredisService:
+    image: redis:latest  # 冒号后加空格
+    container_name: myredisService
+    ports:
+      - "6379:6379"  # 短横线后加空格
+    volumes:
+      - /app/myredisService/myredis.conf:/etc/myredisService/myredisService.conf  # 短横线后加空格
+      - /app/redis/data:/data  # 短横线后加空格
+    networks:
+      - lwc_net  # 短横线后加空格 + 统一网络名
+    command: redis-server /etc/myredisService/myredisService.conf  # 冒号后加空格
+
+  mysqlService:
+    image: mysql:latest  # 冒号后加空格
+    container_name: mysqlService
+    environment:
+      MYSQL_ROOT_PASSWORD: 'mnb2356517'  # 冒号后加空格
+      MYSQL_ALLOW_EMPTY_PASSWORD: "no"  # 冒号后加空格
+      MYSQL_DATABASE: 'bilibili'  # 冒号后加空格
+      MYSQL_USER: 'lwc'  # 冒号后加空格
+      MYSQL_PASSWORD: 'mnb2356517'  # 冒号后加空格
+    ports:
+      - "3306:3306"  # 短横线后加空格
+    volumes:
+      - /app/mysqlService/db:/var/lib/mysqlService  # 短横线后加空格 + 统一缩进
+      - /app/mysqlService/conf/my.cnf:/etc/mysqlService/conf.d/my.cnf  # 短横线后加空格 + 统一缩进
+      - /app/mysqlService/init:/docker-entrypoint-initdb.d  # 短横线后加空格 + 统一缩进
+    networks:
+      - lwc_net  # 短横线后加空格 + 统一网络名
+    command: --default-authentication-plugin=mysql_native_password  # 合并参数避免歧义
+
+networks:
+  lwc_net:  # 统一网络名（与服务中引用一致）

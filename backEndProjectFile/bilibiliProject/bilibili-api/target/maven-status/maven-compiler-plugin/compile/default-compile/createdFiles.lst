@@ -1,0 +1,12 @@
+com\lwc\api\UserFollowingApi.class
+com\lwc\api\UserAuthApi.class
+com\lwc\api\aspect\DataLimitedAspect.class
+com\lwc\api\support\UserSupport.class
+com\lwc\bilibiliApp.class
+com\lwc\api\UserApi.class
+com\lwc\api\VideoApi.class
+com\lwc\api\DanmuApi.class
+com\lwc\api\demoApi.class
+com\lwc\api\aspect\ApiLimitedRoleAspect.class
+com\lwc\api\UserMomentApi.class
+com\lwc\api\FileApi.class
