@@ -10,7 +10,19 @@
 另一个bilibiliProject项目去下载完整版本的后端项目源码，配合这些接口以及您编写的精妙绝伦的前端页面代码，我相信您可以做出一个功能更丰富，更amazing的视频网站!
 
 # Step1
-//克隆本项目
-git clone .git
+git clone https://github.com/jamison11111/myFirstWebSite.git  #克隆本项目
 # Step2
-//用VSCOODE打开本项目的xx文件夹,自行调试界面ui代码，或直接在终端npm run build
+参考"搭建fastdfs.md"文件的指引在你自己的服务器上面安装好fastdfs,nginx以及二者的关联模块，按照文件指引自行测试fastdfs的文件上传功能是否正常。
+# Step3
+用VSCOODE打开本项目的frontEndProjectFile/client目录,自行调试界面ui代码，或直接在vscode命令行终端npm run build将整个前端项目打包到client/build目录下
+# Step4
+将Build目录拷贝到你的前端服务器的nginx的html资源目录下
+# Step5
+用Java工程常用IDE,本人推荐IDEA打开backEndProject/bilibiliProject目录,自动下载maven依赖，自行修改backEndProjectFile/bilibiliProject/bilibili-api/src/main/resources/application-test.properties配置文件，
+指定你自己的mysql,redis,fastdfs文件服务器的ip和端口。用IDEA带有的Maven声明周期管理工具中的"package"选项将后端项目一键打包，你将在bilibili-api/target目录下找到我们打包后的目标jar包bilibili-api-1.0-SNAPSHOT.jar
+# Step6
+将目标jar包连同backEndProject下的docker-compose.yml和Dockerfile文件一起拷贝到你自己的服务器目录下，形成以下形式的目录结构
+![image](https://github.com/user-attachments/assets/b203e86e-1a34-4247-ac2b-1bca90c72709)
+
+
+
