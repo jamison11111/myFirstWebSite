@@ -27,7 +27,7 @@ git clone https://github.com/jamison11111/myFirstWebSite.git  #克隆本项目
 注:在部署开始前，请自行配置好国内的docker镜像源或为你的服务器配置好能够访问外网docker仓库的网络代理。
 # Step7
 linux终端执行docker build -t bilibili_main_docker:1.1 .构建后端项目镜像
-构建完成后,终端执行docker compose up指令一键部署redis,mysql和后端项目容器
+构建完成后,终端执行docker compose up指令一键部署redis,mysql和后端项目容器。
 # Step8
 linux终端执行
 # docker exec -it mysqlService[你的sql容器的名称] bash
